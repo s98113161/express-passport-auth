@@ -91,7 +91,7 @@ module.exports = function(passport) {
         usernameField : 'account',
         passwordField : 'password',
         passReqToCallback : true, // allows us to pass back the entire request to the callback
-		profileFields	: [ 'email' , 'name' ]
+
     },
     function(req, account, password, done) { // callback with account and password from our form
 
@@ -118,10 +118,10 @@ module.exports = function(passport) {
 	 passport.use(new FacebookStrategy({
 
         // pull in our app id and secret from our auth.js file
-        clientID        : configAuth.facebookAuth.clientID,
-        clientSecret    : configAuth.facebookAuth.clientSecret,
-        callbackURL     : configAuth.facebookAuth.callbackURL
-
+        clientID        : configAuth.facebookAuth_heroku.clientID,
+        clientSecret    : configAuth.facebookAuth_heroku.clientSecret,
+        callbackURL     : configAuth.facebookAuth_heroku.callbackURL,
+		profileFields	: [ 'email' , 'name' ]
     },
 
     // facebook will send back the token and profile
