@@ -6,7 +6,7 @@ module.exports = {
     'facebookAuth' : {
 		'clientID' 		: '535827976571653', // your App ID
 		'clientSecret' 	: '8282f0ef7e721fb4dbbe5507520f0303', // your App Secret
-		'callbackURL' 	: 'http://localhost:8080/auth/facebook/callback'
+		'callbackURL' 	: 'http://umdeia-node-passport.herokuapp.com/auth/facebook/callback'
     },
 
     'twitterAuth' : {
