@@ -21,15 +21,15 @@ require('./config/passport')(passport); // pass passport for configuration
 
 app.use(logger('dev')); // log every request to the console
 app.use(bodyParser());  //處理POST的body能力
-app.use(bodyParser.urlencoded({ extended: false }));//處理QueryString 
+app.use(bodyParser.urlencoded({ extended: false  }));//處理application/x-www-form-urlencoded,但不在bodyparse處理querystring
 app.use(cookieParser());//cookie
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));//處理linux 與 windows 路徑不同問題(/,\)
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
-require('./routes/index.js')(app,passport);
+require('./routes')(app,passport);
 
 
 // catch 404 and forward to error handler
