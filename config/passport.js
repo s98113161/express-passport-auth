@@ -18,7 +18,8 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+		console.log(user); 
+        done(null, user.id); //其實是在資料庫內的object.id
     });
 
     // used to deserialize the user
@@ -60,7 +61,7 @@ module.exports = function(passport) {
 
                 // if there is no user with that account
                 // create the user
-                var newUser            = new User();
+                var newUser  = new User();
 
                 // set the user's local credentials
                 newUser.local.account    = account;
