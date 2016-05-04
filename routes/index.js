@@ -13,6 +13,9 @@ function isLoggedIn(req, res, next) {
 
 module.exports = function(app,passport){
 	
+     app.get('/fblogin', function(req, res) {
+        res.render('index.ejs'); // load the index.ejs file
+    });
 	
     // =====================================
     // HOME PAGE (with login links) ========
