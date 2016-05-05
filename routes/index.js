@@ -13,10 +13,11 @@ function isLoggedIn(req, res, next) {
 
 module.exports = function(app,passport){
 	
-     app.get('/fblogin', function(req, res) {
-        res.render('index.ejs'); // load the index.ejs file
+ app.get('/fblogin', function(req, res) {
+    req.session.deviceid=req.query.deviceid;
+      res.redirect('/auth/facebook');
     });
-	
+
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
@@ -29,12 +30,12 @@ module.exports = function(app,passport){
     // =====================================
     // show the login form
     app.get('/login', function(req, res) {
-	
+
         // render the page and pass in any flash data if it exists
         res.render('login.ejs', { message: req.flash('loginMessage') }); //只要req.flash提取過一次之後，便會被抹除。
-		console.log(req.flash('loginMessage')); 
+        console.log(req.flash('loginMessage')); 
     });
-	app.post('/login', passport.authenticate('local-login', {
+    app.post('/login', passport.authenticate('local-login', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
@@ -75,14 +76,17 @@ module.exports = function(app,passport){
     // FACEBOOK ROUTES =====================
     // =====================================
     // route for facebook authentication and login
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope: [ 'email' ] }));
+    app.get('/auth/facebook', passport.authenticate('facebook'));
 
     // handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
             successRedirect : '/profile',
             failureRedirect : '/'
-        }));
+        }),function(req,res){
+            res.redirect('/profile');
+
+        });
 
     // =====================================
     // LOGOUT ==============================
@@ -91,6 +95,6 @@ module.exports = function(app,passport){
         req.logout();
         res.redirect('/');
     });
-	
+
 };
 
