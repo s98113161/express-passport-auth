@@ -18,7 +18,7 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-		console.log(user); 
+      console.log(user); 
         done(null, user.id); //其實是在資料庫內的object.id
     });
 
@@ -119,9 +119,9 @@ module.exports = function(passport) {
     passport.use(new FacebookStrategy({
 
         // pull in our app id and secret from our auth.js file
-        clientID         : configAuth.facebookAuth_heroku.clientID,
-        clientSecret     : configAuth.facebookAuth_heroku.clientSecret,
-        callbackURL      : configAuth.facebookAuth_heroku.callbackURL,
+        clientID         : configAuth.facebookAuth.clientID,
+        clientSecret     : configAuth.facebookAuth.clientSecret,
+        callbackURL      : configAuth.facebookAuth.callbackURL,
         profileFields	 : [ 'email' , 'name' ],
         passReqToCallback: true
     },
@@ -141,13 +141,15 @@ module.exports = function(passport) {
 
                 // if the user is found, then log them in
                 if (user) {
-                    if(req.session.deviceid)
-                    User.update({_id:user._id},{$push:{"facebook.deviceid":req.session.deviceid}},function(err,updateUser){
-                        if(err)
+                    if(req.session.deviceid){
+                        User.update({_id:user._id},{$push:{"facebook.deviceid":req.session.deviceid}},function(err,updateUser){
+                            if(err){
                             return done(err); //if error, stop that and return
-                            delete req.session.deviceid; //success,and delete session.deviceid
-                        });
-                  return done(null, user);// find user || update sucess , return that user
+                        }
+                    })
+                    }
+                    delete req.session.deviceid; //success,and delete session.deviceid
+                    return done(null, user);// find user || update sucess , return that user
                   //  return done(null, user); // user found, return that user
               } else {
                     // if there is no user found with that facebook id, create them
